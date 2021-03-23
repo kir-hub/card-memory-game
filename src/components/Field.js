@@ -1,52 +1,42 @@
-import React,{useCallback, useState} from 'react'
+import React,{useCallback, useEffect, useState} from 'react'
 import Card from './Card'
+import initialState from './CardsData'
+import './styles/styles.css'
+
 
 export default function Field() {
-    const initialState = [
-        {id: 1, uniqueId: 0, isFlipped: false},
-        {id: 2, uniqueId: 1, isFlipped: false},
-        {id: 3, uniqueId: 2, isFlipped: false},
-        {id: 4, uniqueId: 3, isFlipped: false},
-        {id: 1, uniqueId: 4, isFlipped: false},
-        {id: 2, uniqueId: 5, isFlipped: false},
-        {id: 3, uniqueId: 6, isFlipped: false},
-        {id: 4, uniqueId: 7, isFlipped: false},
-    ]
 
     const [cards, setCards] = useState(initialState)
     const [storedValue, setStoredValue] = useState([])
+    const [leftCards, setLeftCards] = useState([...cards])
+    const [notMatch, setNotMatch] = useState(false)
+    
+    const flip =(uniqueId, id)=>{
+        setStoredValue([...storedValue, {id: id, uniqueId: uniqueId}]);
+    }
 
-    // const match = useCallback((id)=>{
-    //     if()
-    // },[])
-
-    const flip = ((uniqueId, id)=>{
-        setCards([...cards, cards[uniqueId].isFlipped = !cards[uniqueId].isFlipped ])
-        const newCards = [...cards]
-        setCards([...newCards])
-        console.log(cards);
-        setStoredValue([id, ...storedValue])
-    })
-        console.log(storedValue);
-
+    useEffect(()=>{
+        matching()
+    },[storedValue])
+    
     const matching = ()=>{
         if(storedValue.length == 2){
-            if(storedValue[0] == storedValue[1]){
-                const newCards = [...cards]
-                newCards.filter((item)=> item.id !== id )
-                setCards([...newCards])
+            if(storedValue[0].id == storedValue[1].id && storedValue[0].uniqueId !== storedValue[1].uniqueId){
+                const newCards = cards.filter((item)=> item.id !== storedValue[0].id)  
+                setTimeout(()=>setCards([...newCards]),500 ) 
+                setLeftCards([...newCards])
                 setStoredValue([])
-            }else{
+            }else if(storedValue[0].id !== storedValue[1].id){
+                setTimeout(()=> setCards([...leftCards]),500) 
+                setTimeout(()=> setNotMatch(prev => !prev),500)
                 setStoredValue([])
             }
         }
-    }
-
-
+    };
 
     return (
-        <div>
-            {cards.map((item, index)=><div key={cards[index].uniqueId}><Card isFlipped={cards[index].isFlipped} id={cards[index].id} uniqueId={cards[index].uniqueId} flip={flip} match={matching}/></div> )}    
+        <div className='parent'>
+            {cards.map((item, index)=><div key={cards[index].uniqueId}><Card notMatch={notMatch}  id={cards[index].id} uniqueId={cards[index].uniqueId} flip={flip}  /></div> )}    
         </div>
     )
 }
