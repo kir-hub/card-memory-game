@@ -26,6 +26,7 @@ export default function Field() {
                 setTimeout(()=>setCards([...newCards]),500 ) 
                 setLeftCards([...newCards])
                 setStoredValue([])
+                
             }else if(storedValue[0].id !== storedValue[1].id){
                 setTimeout(()=> setCards([...leftCards]),500) 
                 setTimeout(()=> setNotMatch(prev => !prev),500)
