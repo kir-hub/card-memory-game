@@ -1,6 +1,16 @@
-.hide{
-    display: none;
+.parent{
+    width: 200px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
+    grid-gap: 2vw;
 }
+
+
 .show{
-    display: block;
+    width: 200px;
+    height: 200px;
+}
+img{
+    height: 150px;
 }
